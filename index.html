@@ -23,7 +23,8 @@ const SITE = {
   legalName:   "",   // add "South Beach Trade Co. LLC" once Sunbiz shows Active
 
   headline:    "Dependable supply for government buyers.",
-  subheadline: "MRO, janitorial and office products, quoted fast, documented right, and delivered on time.",
+  // Short promises shown as a check-mark list under the headline. Add, remove or reword freely.
+  guarantees:  ["Quoted fast", "Documented right", "Delivered on time"],
 
   email:       "bids@southbeachtrade.com",
   phone:       "(305) 707-4835",      // Google Voice business number
@@ -191,6 +192,11 @@ const SITE = {
   }
   .hero h1 { color: #fff; font-size: clamp(2.2rem, 5.2vw, 3.6rem); font-weight: 800; max-width: 760px; }
   .hero .eyebrow { color: #8fd6cc; }
+  .guarantees { list-style: none; padding: 0; margin: 22px 0 34px; display: flex; flex-wrap: wrap; gap: 12px 28px; }
+  .guarantees li { display: inline-flex; align-items: center; gap: 10px; color: #e6f0f5; font-size: clamp(1.02rem, 1.6vw, 1.18rem); font-weight: 600; }
+  .guarantees .tick { width: 26px; height: 26px; flex: none; border-radius: 50%; display: grid; place-items: center; background: rgba(42,157,143,.22); box-shadow: inset 0 0 0 1px rgba(143,214,204,.45); }
+  .guarantees .tick svg { width: 14px; height: 14px; stroke: #8fd6cc; }
+  @media (max-width: 640px) { .guarantees { flex-direction: column; gap: 10px; } }
   .hero p.sub { color: #cfe0ea; font-size: clamp(1.02rem, 1.6vw, 1.2rem); max-width: 620px; margin: 18px 0 32px; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
   .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 36px; color: #b9cfdc; font-size: .9rem; font-weight: 600; }
@@ -315,7 +321,7 @@ const SITE = {
     <div class="wrap">
       <p class="eyebrow">Government Supply · <span data-text="location"></span></p>
       <h1 data-text="headline"></h1>
-      <p class="sub" data-text="subheadline"></p>
+      <ul class="guarantees" id="guarantees" data-show="guarantees"></ul>
       <div class="hero-actions">
         <a class="btn btn-primary" data-rfq href="#contact">Request a Quote</a>
         <a class="btn btn-ghost" href="#supplies">What We Supply</a>
@@ -458,6 +464,11 @@ const SITE = {
   const n = isPlaceholder(SITE.owner.name) ? "" : SITE.owner.name;
   document.getElementById("initials").textContent =
     n ? n.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase() : "SB";
+
+  // Hero guarantees
+  const tick = '<span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>';
+  const escG = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  document.getElementById("guarantees").innerHTML = (SITE.guarantees || []).map(g => `<li>${tick}<span>${escG(g)}</span></li>`).join("");
 
   // Category cards
   const icons = {
